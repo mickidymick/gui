@@ -28,14 +28,12 @@ static inline void      _yed_gui_draw_list_menu(yed_gui_list_menu *menu);
 static inline int       _yed_gui_key_pressed_list_menu(yed_event *event, yed_gui_list_menu *menu);
 static inline void      _yed_gui_mouse_pressed_list_menu(yed_event *event, yed_gui_list_menu *menu);
 static inline void      _yed_gui_kill_list_menu(yed_gui_list_menu *menu);
-static inline void      _yed_gui_update_list_menu(yed_gui_list_menu *menu);
 
 /* Base Functions */
 static inline void       yed_gui_draw(void *base);
 static inline int        yed_gui_key_pressed(yed_event *event, void *base);
 static inline void       yed_gui_mouse_pressed(yed_event *event, void *base);
 static inline void       yed_gui_kill(void *base);
-static inline void       yed_gui_update(void *base);
 
 
 /* Initilization Functions */
@@ -140,7 +138,6 @@ static inline int _yed_gui_key_pressed_list_menu(yed_event *event, yed_gui_list_
             menu->selection = menu->max_size - 1;
         }
         yed_gui_draw(menu);
-
     }else if (event->key == ARROW_DOWN || event->key == TAB) {
         event->cancel = 1;
         if (menu->selection < menu->max_size - 1) {
@@ -150,7 +147,6 @@ static inline int _yed_gui_key_pressed_list_menu(yed_event *event, yed_gui_list_
         }
         yed_gui_draw(menu);
     }
-
     return 0;
 }
 
@@ -218,15 +214,6 @@ static inline void _yed_gui_kill_list_menu(yed_gui_list_menu *menu) {
     menu->base.is_up = 0;
 }
 
-/* Specialized Update Functions */
-static inline void _yed_gui_update_list_menu(yed_gui_list_menu *menu) {
-    yed_direct_draw_t **dit;
-
-    array_traverse(menu->base.dds, dit) {
-        (*dit)->dirty = 1;
-    }
-}
-
 /* Abstracted Base Functions */
 static inline int yed_gui_key_pressed(yed_event *event, void* base) {
     switch(((_yed_gui_base*)base)->kind) {
@@ -259,15 +246,6 @@ static inline void yed_gui_kill(void *base) {
     switch(((_yed_gui_base*)base)->kind) {
         case LIST_MENU:
             _yed_gui_kill_list_menu(base);
-            break;
-        default:;
-    }
-}
-
-static inline void yed_gui_update(void *base) {
-    switch(((_yed_gui_base*)base)->kind) {
-        case LIST_MENU:
-            _yed_gui_update_list_menu(base);
             break;
         default:;
     }
