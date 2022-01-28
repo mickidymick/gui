@@ -1,3 +1,5 @@
+#ifndef __YED_GUI_H__
+#define __YED_GUI_H__
 #define LIST_MENU (0)
 
 /* Base GUI Struct */
@@ -289,3 +291,4 @@ static inline int yed_gui_find_width(array_t strings) {
 
     return width;
 }
+#endif
